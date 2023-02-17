@@ -1,4 +1,4 @@
-interface BlinkReminderSettings {
+interface AraVerSettings {
   remindInterval: number;
   breakInterval: number;
   breakDuration: number;
@@ -7,7 +7,7 @@ interface BlinkReminderSettings {
 }
 
 interface GetSettingsCallback {
-  (settings: BlinkReminderSettings): void;
+  (settings: AraVerSettings): void;
 }
 
 function loadOptions(): void {
@@ -23,7 +23,7 @@ function loadOptions(): void {
   );
 }
 
-function optionsLoaded(settings: BlinkReminderSettings) {
+function optionsLoaded(settings: AraVerSettings) {
   (document.querySelector("#remindInterval") as HTMLInputElement).value = settings.remindInterval.toString();
   (document.querySelector("#breakInterval") as HTMLInputElement).value = settings.breakInterval.toString();
   (document.querySelector("#breakDuration") as HTMLInputElement).value = settings.breakDuration.toString();
@@ -34,7 +34,7 @@ function optionsLoaded(settings: BlinkReminderSettings) {
 
 function saveOptions() {
   console.log("saving settings");
-  let newSettings: BlinkReminderSettings = {
+  let newSettings: AraVerSettings = {
     remindInterval: parseInt((document.querySelector("#remindInterval") as HTMLInputElement).value, 10),
     breakInterval: parseInt((document.querySelector("#breakInterval") as HTMLInputElement).value, 10),
     breakDuration: parseInt((document.querySelector("#breakDuration") as HTMLInputElement).value, 10),

@@ -1,11 +1,11 @@
 /// <reference path="options.ts" />
+const sound = new Audio("sounds/notifications-pop.mp3");
 
-class BlinkReminder {
-  settings: BlinkReminderSettings = null;
+class AraVer {
+  settings: AraVerSettings = null;
   timeWithoutBreak: number = 0;
   lastStateChangeTimestamp: number = 0;
-
-  init(settings: BlinkReminderSettings): void {
+  init(settings: AraVerSettings): void {
     chrome.idle.setDetectionInterval(60);
     chrome.storage.onChanged.addListener(this.onSettingsChanged);
     chrome.idle.onStateChanged.addListener(this.onStateChanged);
@@ -14,7 +14,8 @@ class BlinkReminder {
       chrome.runtime.openOptionsPage();
     });
     this.lastStateChangeTimestamp = Date.now();
-    chrome.alarms.create("reminder_alarm", { periodInMinutes: settings.remindInterval });
+    chrome.alarms.create("reminder_alarm", {
+      periodInMinutes: settings.remindInterval });
     console.log("addon loaded");
   }
   onStateChanged(newState: string): void {
@@ -42,10 +43,23 @@ class BlinkReminder {
     blinkReminder.timeWithoutBreak += blinkReminder.settings.remindInterval;
     if (blinkReminder.timeWithoutBreak >= blinkReminder.settings.breakInterval) {
       console.log(blinkReminder.getTimeForLogging().concat(": Uzun Ara, without break since ", blinkReminder.timeWithoutBreak.toString(), " minutes"));
-      chrome.notifications.create("ara_ver", { type: "basic", title: "Uzun Ara Ver", iconUrl: "icons/icons8_pause_64px.png", message: "Lütfen,".concat(blinkReminder.settings.breakDuration.toString(), " dakika Ara Ver") });
+      chrome.notifications.create("ara_ver", {
+        type: "basic",
+        title: "Uzun Ara Ver",
+        iconUrl: "icons/icons8_pause_64px.png",
+        message: "Lütfen,".concat(blinkReminder.settings.breakDuration.toString(), " dakika Ara Ver"),
+      });
+
+      sound.play();
     } else {
       console.log(blinkReminder.getTimeForLogging().concat(": Kısa Ara, without break since ", blinkReminder.timeWithoutBreak.toString(), " minutes"));
-      chrome.notifications.create("ara_ver", { type: "basic", title: "Ara Ver", iconUrl: "icons/icons8_pause_64px.png", message: "Bilgisayar Başından Kalkmalısın. Kısa bir Ara ver" });
+      chrome.notifications.create("ara_ver", {
+        type: "basic",
+        title: "Ara Ver",
+        iconUrl: "icons/icons8_pause_64px.png",
+        message: "Bilgisayar Başından Kalkmalısın. Kısa bir Ara ver",
+      });
+      sound.play();
     }
   }
   loadSettings(): void {
@@ -55,7 +69,7 @@ class BlinkReminder {
         breakInterval: 60,
         breakDuration: 10,
       },
-      (s: BlinkReminderSettings) => {
+      (s: AraVerSettings) => {
         if (!chrome.runtime.lastError) {
           blinkReminder.settings = s;
           blinkReminder.init(s);
@@ -80,5 +94,5 @@ class BlinkReminder {
   }
 }
 
-const blinkReminder: BlinkReminder = new BlinkReminder();
+const blinkReminder: AraVer = new AraVer();
 blinkReminder.loadSettings();
