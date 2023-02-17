@@ -1,0 +1,21 @@
+{
+  "name": "wakeupreminder",
+  "version": "0.1.0",
+  "description": "Wake-up and pausly WebExtension for Firefox. Reminds the user to blink wake up regularly to prevent obesity.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc .\\main.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ge0rgi/blinkreminder.git"
+  },
+  "author": "Cem Kaan Kösalı",
+  "license": "MPL-2.0",
+  "homepage": "https://github.com/cemkaan/wakeUpReminder",
+  "devDependencies": {
+    "@types/chrome": "0.0.213",
+    "typescript": "^4.9.5"
+  }
+}
