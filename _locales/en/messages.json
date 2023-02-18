@@ -40,7 +40,7 @@
     "description": "normal mesaj."
   },
   "breakContent": {
-    "message": "give Long break for $timeWithoutBreak$ minutes",
+    "message": "You Better Give Long break for $timeWithoutBreak$ minutes",
     "description": "Tells the user to give a long break",
     "placeholders": {
       "timeWithoutBreak": {
