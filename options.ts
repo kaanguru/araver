@@ -18,23 +18,9 @@ function loadOptions(): void {
     optionsLoaded
   );
 }
-
-function setFormTitles(): void {
-  const titles = {
-    optionsTitle: chrome.i18n.getMessage("optionsTitle"),
-    shortRemTitle: chrome.i18n.getMessage("shortRemTitle"),
-    longRemTitle: chrome.i18n.getMessage("longRemTitle"),
-    longRemMinMessage: chrome.i18n.getMessage("longRemMinMessage"),
-    submitMessage: chrome.i18n.getMessage("submitMessage"),
-  };
-
-    document.querySelector("legend").innerHTML = titles.optionsTitle;
-    document.getElementById("shortRemTitle").innerHTML = titles.shortRemTitle;
-    document.getElementById("longRemTitle").innerHTML = titles.longRemTitle;
-    document.getElementById("longRemMinMessage").innerHTML = titles.longRemMinMessage;
-    document.querySelector("button").innerHTML = titles.submitMessage;
+function setFormTitles(){
+   console.log("set form titles")
 }
-
 function optionsLoaded(settings: PauseScreenSettings) {
   (document.querySelector("#remindInterval") as HTMLInputElement).value = settings.remindInterval.toString();
   (document.querySelector("#breakInterval") as HTMLInputElement).value = settings.breakInterval.toString();

@@ -29,20 +29,20 @@
     "message": "Save",
     "description": "Submit button text."
   },
-  "shortNotificationTitle": {
+  "reminderTitle": {
     "message": "Pause Time",
     "description": "Title of the short  notification."
   },
-  "longNotificationTitle": {
+  "breakTitle": {
     "message": "Break Time",
     "description": "Title of long notification."
   },
-  "shortNotificationContent": {
-    "message": "Kısa bir ara ver ",
+  "reminderContent": {
+    "message": "Short ",
     "description": "normal mesaj."
   },
-  "longNotificationContent": {
-    "message": "give Long break $timeWithoutBreak$.",
+  "breakContent": {
+    "message": "give Long break for $timeWithoutBreak$ minutes",
     "description": "Tells the user to give a long break",
     "placeholders": {
       "timeWithoutBreak": {
