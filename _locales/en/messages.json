@@ -1,0 +1,54 @@
+{
+  "extensionName": {
+    "message": "Pause Screen",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Give break to work , look away from screen reminders.",
+    "description": "Description of the extension."
+  },
+
+  "optionsTitle": {
+    "message": "Options",
+    "description": "Title of the options form."
+  },
+  "shortRemTitle": {
+    "message": "Short Reminder Interval",
+    "description": "Title of Hatırlatma Aralığı dk."
+  },
+  "longRemTitle": {
+    "message": "Long Reminder Interval",
+    "description": "Title of Uzun Hatırlatma Aralığı dk."
+  },
+  "longRemMinMessage": {
+    "message": "Long Reminder Duration",
+    "description": "Title of Uzun Hatırlatma uzunluğu dk."
+  },
+  "submitMessage": {
+    "message": "Save",
+    "description": "Submit button text."
+  },
+  "shortNotificationTitle": {
+    "message": "Pause Time",
+    "description": "Title of the short  notification."
+  },
+  "longNotificationTitle": {
+    "message": "Break Time",
+    "description": "Title of long notification."
+  },
+  "shortNotificationContent": {
+    "message": "Kısa bir ara ver ",
+    "description": "normal mesaj."
+  },
+  "longNotificationContent": {
+    "message": "give Long break $timeWithoutBreak$.",
+    "description": "Tells the user to give a long break",
+    "placeholders": {
+      "timeWithoutBreak": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  }
+}

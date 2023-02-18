@@ -1,12 +1,16 @@
 /// <reference path="options.ts" />
-const sound = new Audio("sounds/notifications-pop.mp3");
 
-class AraVer {
-  settings: AraVerSettings = null;
+class PauseScreen {
+  settings: PauseScreenSettings = null;
   timeWithoutBreak: number = 0;
   lastStateChangeTimestamp: number = 0;
-  init(settings: AraVerSettings): void {
-    chrome.idle.setDetectionInterval(60);
+  messages = {
+    longNotificationTitle: chrome.i18n.getMessage("longNotificationTitle"),
+    shortNotificationTitle: chrome.i18n.getMessage("shortNotificationTitle"),
+    shortNotificationContent: chrome.i18n.getMessage("shortNotificationContent"),
+  };
+  init(settings: PauseScreenSettings): void {
+    chrome.idle.setDetectionInterval(10);
     chrome.storage.onChanged.addListener(this.onSettingsChanged);
     chrome.idle.onStateChanged.addListener(this.onStateChanged);
     chrome.alarms.onAlarm.addListener(this.onAlarmFired);
@@ -15,51 +19,49 @@ class AraVer {
     });
     this.lastStateChangeTimestamp = Date.now();
     chrome.alarms.create("reminder_alarm", {
-      periodInMinutes: settings.remindInterval });
-    console.log("addon loaded");
+      periodInMinutes: settings.remindInterval,
+    });
   }
   onStateChanged(newState: string): void {
     let now: Date = new Date();
-    console.log(blinkReminder.getTimeForLogging().concat(": state change, new state ", newState));
+    console.log(pauseScreen.getTimeForLogging().concat(": state change, new state ", newState));
     if (newState != "active") {
-      blinkReminder.timeWithoutBreak += Math.round((now.getTime() - blinkReminder.lastStateChangeTimestamp) / (60 * 1000));
+      pauseScreen.timeWithoutBreak += Math.round((now.getTime() - pauseScreen.lastStateChangeTimestamp) / (60 * 1000));
       chrome.alarms.clearAll();
     } else if (newState == "active") {
-      let diff: number = now.getTime() - blinkReminder.lastStateChangeTimestamp;
+      let diff: number = now.getTime() - pauseScreen.lastStateChangeTimestamp;
       let minutes: number = Math.round(diff / (1000 * 60));
-      if (minutes >= blinkReminder.settings.breakDuration - 1) {
+      if (minutes >= pauseScreen.settings.breakDuration - 1) {
         // because 1 minute passes bewfore we go in idle srare
-        console.log(blinkReminder.getTimeForLogging().concat(": away for ", (diff / (1000 * 60)).toString(), "m reseting break timer"));
-        blinkReminder.timeWithoutBreak = 0;
+        console.log(pauseScreen.getTimeForLogging().concat(": away for ", (diff / (1000 * 60)).toString(), "m reseting break timer"));
+        pauseScreen.timeWithoutBreak = 0;
       } else {
-        console.log(blinkReminder.getTimeForLogging().concat(": short break for ", minutes.toString(), " minutes"));
-        blinkReminder.timeWithoutBreak -= minutes;
+        console.log(pauseScreen.getTimeForLogging().concat(": short break for ", minutes.toString(), " minutes"));
+        pauseScreen.timeWithoutBreak -= minutes;
       }
-      chrome.alarms.create("reminder_alarm", { periodInMinutes: blinkReminder.settings.remindInterval });
+      chrome.alarms.create("reminder_alarm", { periodInMinutes: pauseScreen.settings.remindInterval });
     }
-    blinkReminder.lastStateChangeTimestamp = now.getTime();
+    pauseScreen.lastStateChangeTimestamp = now.getTime();
   }
   onAlarmFired(alarm: chrome.alarms.Alarm): void {
-    blinkReminder.timeWithoutBreak += blinkReminder.settings.remindInterval;
-    if (blinkReminder.timeWithoutBreak >= blinkReminder.settings.breakInterval) {
-      console.log(blinkReminder.getTimeForLogging().concat(": Uzun Ara, without break since ", blinkReminder.timeWithoutBreak.toString(), " minutes"));
+    pauseScreen.timeWithoutBreak += pauseScreen.settings.remindInterval;
+    if (pauseScreen.timeWithoutBreak >= pauseScreen.settings.breakInterval) {
+      console.log(pauseScreen.getTimeForLogging().concat(": Uzun Ara, without break since ", pauseScreen.timeWithoutBreak.toString(), " minutes"));
       chrome.notifications.create("ara_ver", {
         type: "basic",
-        title: "Uzun Ara Ver",
+        title: "uzun ara",
         iconUrl: "icons/icons8_pause_64px.png",
-        message: "Lütfen,".concat(blinkReminder.settings.breakDuration.toString(), " dakika Ara Ver"),
+        // message: chrome.i18n.getMessage("longNotificationContent",pauseScreen.settings.breakDuration.toString())
+        message: "Lütfen,".concat(pauseScreen.settings.breakDuration.toString(), " dakika Ara Ver"),
       });
-
-      sound.play();
     } else {
-      console.log(blinkReminder.getTimeForLogging().concat(": Kısa Ara, without break since ", blinkReminder.timeWithoutBreak.toString(), " minutes"));
+      console.log(pauseScreen.getTimeForLogging().concat(": Kısa Ara, without break since ", pauseScreen.timeWithoutBreak.toString(), " minutes"));
       chrome.notifications.create("ara_ver", {
         type: "basic",
-        title: "Ara Ver",
+        title: "kısa ara başlık",
         iconUrl: "icons/icons8_pause_64px.png",
-        message: "Bilgisayar Başından Kalkmalısın. Kısa bir Ara ver",
+        message: "kısa ara mesajı",
       });
-      sound.play();
     }
   }
   loadSettings(): void {
@@ -69,10 +71,10 @@ class AraVer {
         breakInterval: 60,
         breakDuration: 10,
       },
-      (s: AraVerSettings) => {
+      (s: PauseScreenSettings) => {
         if (!chrome.runtime.lastError) {
-          blinkReminder.settings = s;
-          blinkReminder.init(s);
+          pauseScreen.settings = s;
+          pauseScreen.init(s);
         } else {
           console.error("Error loading settings ".concat(chrome.runtime.lastError.message));
         }
@@ -81,10 +83,10 @@ class AraVer {
   }
   onSettingsChanged(change: { [key: string]: chrome.storage.StorageChange }, area: string): void {
     chrome.alarms.clearAll();
-    blinkReminder.settings.remindInterval = change["remindInterval"].newValue;
-    blinkReminder.settings.breakInterval = change["breakInterval"].newValue;
-    blinkReminder.settings.breakDuration = change["breakDuration"].newValue;
-    chrome.alarms.create("reminder_alarm", { periodInMinutes: blinkReminder.settings.remindInterval });
+    pauseScreen.settings.remindInterval = change["remindInterval"].newValue;
+    pauseScreen.settings.breakInterval = change["breakInterval"].newValue;
+    pauseScreen.settings.breakDuration = change["breakDuration"].newValue;
+    chrome.alarms.create("reminder_alarm", { periodInMinutes: pauseScreen.settings.remindInterval });
   }
   getTimeForLogging(): string {
     let now: Date = new Date();
@@ -94,5 +96,5 @@ class AraVer {
   }
 }
 
-const blinkReminder: AraVer = new AraVer();
-blinkReminder.loadSettings();
+const pauseScreen: PauseScreen = new PauseScreen();
+pauseScreen.loadSettings();

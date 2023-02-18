@@ -1,10 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Ara Ver",
+  "name": "__MSG_extensionName__",
   "version": "0.1.0",
-
-  "description": "Ara verme hatırlatıcısı,pausly (www.pausly.app) ",
-
+  "description": "__MSG_extensionDescription__",
   "background": {
     "scripts": ["options.js", "main.js"]
   },
@@ -21,7 +19,8 @@
       "32": "icons/icons8_pause_32px.png",
       "64": "icons/icons8_pause_64px.png"
     },
-    "default_title": "Ara Ver Ayarları",
+    "default_title": "Pause Screen Settings",
     "default_popup": "options.html"
-  }
+  },
+  "default_locale": "en"
 }
