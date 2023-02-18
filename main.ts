@@ -21,12 +21,11 @@ class PauseScreen {
     });
     this.lastStateChangeTimestamp = Date.now();
     chrome.alarms.create("reminder_alarm", { periodInMinutes: settings.remindInterval });
-    console.log("addon loaded");
   }
   onStateChanged(newState: string): void {
     let now: Date = new Date();
     const timeForLogging = pauseReminder.getTimeForLogging();
-    console.log(`${timeForLogging}: state change, new state ${newState}`);
+    // // console.log(`${timeForLogging}: state change, new state ${newState}`);
 
     // Calculate time difference
     let diff: number = now.getTime() - pauseReminder.lastStateChangeTimestamp;
@@ -39,10 +38,10 @@ class PauseScreen {
     } else if (newState == "active") {
       if (minutes >= pauseReminder.settings.breakDuration - 1) {
         // because 1 minute passes before we go in idle state
-        console.log(`${timeForLogging}: away for  ${(diff / (1000 * 60)).toString()} min reseting break timer`);
+        // console.log(`${timeForLogging}: away for  ${(diff / (1000 * 60)).toString()} min reseting break timer`);
         pauseReminder.timeWithoutBreak = 0;
       } else {
-        console.log(`${timeForLogging} short break for  ${minutes.toString()}  minutes`);
+        // console.log(`${timeForLogging} short break for  ${minutes.toString()}  minutes`);
         pauseReminder.timeWithoutBreak -= minutes;
       }
       chrome.alarms.create("reminder_alarm", { periodInMinutes: pauseReminder.settings.remindInterval });
@@ -53,7 +52,7 @@ class PauseScreen {
     const timeForLogging = pauseReminder.getTimeForLogging();
     pauseReminder.timeWithoutBreak += pauseReminder.settings.remindInterval;
     if (pauseReminder.timeWithoutBreak >= pauseReminder.settings.breakInterval) {
-      console.log(`${timeForLogging}: Long Break, without break since : ${pauseReminder.timeWithoutBreak.toString()} minutes`);
+      // console.log(`${timeForLogging}: Long Break, without break since : ${pauseReminder.timeWithoutBreak.toString()} minutes`);
       chrome.notifications.create("pause", {
         type: "basic",
         title: breakTitle,
@@ -61,7 +60,7 @@ class PauseScreen {
         message: breakContent(pauseReminder.settings.breakDuration.toString()),
       });
     } else {
-      console.log(`${timeForLogging}:  Short Pause, without break since  ${pauseReminder.timeWithoutBreak.toString()} minutes`);
+      // console.log(`${timeForLogging}:  Short Pause, without break since  ${pauseReminder.timeWithoutBreak.toString()} minutes`);
       let randomIcon = pauseIconUrls[Math.floor(Math.random() * pauseIconUrls.length)];
       chrome.notifications.create("pause", {
         type: "basic",

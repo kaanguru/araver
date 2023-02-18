@@ -1,7 +1,7 @@
 {
-  "name": "pause_screen",
+  "name": "stretch_rest_reminder",
   "version": "0.1.0",
-  "description": "Give break to work , look away from screen reminders.",
+  "description": "firefox extention reminding you to give a break and look away from screen",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

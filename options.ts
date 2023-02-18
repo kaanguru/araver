@@ -19,7 +19,7 @@ function loadOptions(): void {
   );
 }
 function setFormTitles(): void {
-  console.log("set form titles");
+  // console.log("set form titles");
   const optionsTitle = chrome.i18n.getMessage("optionsTitle");
   const shortRemTitle = chrome.i18n.getMessage("shortRemTitle");
   const longRemTitle = chrome.i18n.getMessage("longRemTitle");
@@ -41,7 +41,7 @@ function optionsLoaded(settings: PauseScreenSettings) {
 }
 
 function saveOptions() {
-  console.log("saving settings");
+  // console.log("saving settings");
   let newSettings: PauseScreenSettings = {
     remindInterval: parseInt((document.querySelector("#remindInterval") as HTMLInputElement).value, 10),
     breakInterval: parseInt((document.querySelector("#breakInterval") as HTMLInputElement).value, 10),
@@ -54,7 +54,7 @@ function settingSavedCallback() {
   if (chrome.runtime.lastError) {
     console.error("Error saving settings ".concat(chrome.runtime.lastError.message));
   } else {
-    console.log("Settings saved");
+    // console.log("Settings saved");
   }
 }
 
