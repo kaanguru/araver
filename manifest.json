@@ -11,8 +11,9 @@
     "page": "options.html"
   },
   "icons": {
-    "32": "icons/icons8_pause_32px.png",
-    "64": "icons/icons8_pause_64px.png"
+    "32": "icons/icons8_stretching_32px.png",
+    "64": "icons/icons8_stretching_64px.png",
+    "100": "icons/icons8_stretching_100px.png"
   },
   "browser_action": {
     "default_icon": {

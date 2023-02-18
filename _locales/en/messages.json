@@ -3,12 +3,10 @@
     "message": "Pause Screen",
     "description": "Name of the extension."
   },
-
   "extensionDescription": {
     "message": "Give break to work , look away from screen reminders.",
     "description": "Description of the extension."
   },
-
   "optionsTitle": {
     "message": "Options",
     "description": "Title of the options form."
